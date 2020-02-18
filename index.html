@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Logo MM!</title>
+</head>
+<body>
+<h1>Logo MM!</h1>
+
+<div class="row">
+    <div class="col col-md-3">
+        <form>
+            <div class="form-group">
+                <label for="input">Logo Rows</label>
+                <input type="text" class="form-control" id="input" placeholder="Enter number here ...">
+                <small id="inputHelp" class="form-text">Provide us with valid odd number 2 < N < 10'000.</small>
+            </div>
+            <button id="row-number" type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+<div id="mm-logo">
+
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+    $("#input").keyup(function(e) {
+        if (/\D/g.test(this.value))
+        {
+            // Filter non-digits from input value.
+            this.value = this.value.replace(/\D/g, "");
+        }
+    });
+
+    function isValid (input) {
+        return Number.isInteger(input) && (input > 2) && (input < 10000) && (input % 2 !== 0);
+    }
+
+    $("form").submit(function (event) {
+        $("#output").remove();
+        $("#inputHelp").css("color", "black");
+        // Get the input
+        event.preventDefault();
+        var input = $("#input").val();
+        input = parseInt(input);
+
+        // Validate 2 < N < 10000 && must also be an odd number!
+        if (!isValid(input)) {
+
+            $("#inputHelp").css("color", "red");
+            return;
+        }
+
+        var rows = (input + 1)/2;
+        var output = "";
+
+        // Loop first half
+        for (var i = 0; i < rows; i++) {
+           output += ("-".repeat(input - i) + "*".repeat(input + (2 * i)) + "-".repeat(input - (2 * i)) + "*".repeat(input + (2 * i)) + "-".repeat(input - i)).repeat(2) + '</br>';
+        }
+
+        // Loop second half
+        for (var i = 0; i < rows; i++) {
+            output += ("-".repeat((input - 1)/2 - i) + "*".repeat(input) + "-".repeat(1 + 2 * i) + "*".repeat(2 * input - 1 - 2 * i) + "-".repeat(1 + 2 * i) + "*".repeat(input) + "-".repeat((input - 1)/2 - i)).repeat(2) + '</br>';
+        }
+
+        $("#mm-logo").append( "<p id=\"output\">" + output + "</p>" );
+    });
+</script>
+</body>
+</html>
